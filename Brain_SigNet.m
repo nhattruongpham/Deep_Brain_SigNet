@@ -10,9 +10,10 @@ dataSN = readmatrix('Time-domain_Rabi-antenna.csv');
 t = dataSN(:,1);
 intensity = dataSN(:,2);
 figure(1)
-plot(t, intensity)
-xlabel("Intensity")
-ylabel("Time")
+% plot(t, intensity)
+plot(dataSN(:,2))
+xlabel("Time (fs)")
+ylabel("Amplitude (a.u.)")
 title("Time-domain of Rabi Antenna")
 %%
 %% Partition the training and test data. Train on the first 90% of the sequence and test on the last 10%.
@@ -43,7 +44,7 @@ layers = [ ...
 options = trainingOptions('adam', ...
     'MaxEpochs',250, ...
     'GradientThreshold',1, ...
-    'InitialLearnRate',0.005, ...
+    'InitialLearnRate',0.001, ...
     'LearnRateSchedule','piecewise', ...
     'LearnRateDropPeriod',125, ...
     'LearnRateDropFactor',0.2, ...
@@ -77,8 +78,8 @@ hold on
 idx = numTimeStepsTrain:(numTimeStepsTrain+numTimeStepsTest);
 plot(idx,[dataSN(numTimeStepsTrain) YPred],'.-')
 hold off
-xlabel("Time")
-ylabel("Intensity")
+xlabel("Time (fs)")
+ylabel("Amplitude (a.u.)")
 title("Forecast")
 legend(["Observed" "Forecast"])
 
@@ -90,12 +91,12 @@ hold on
 plot(YPred,'.-')
 hold off
 legend(["Observed" "Forecast"])
-ylabel("Intensity")
+ylabel("Amplitude (a.u.)")
 title("Forecast")
 
 subplot(2,1,2)
 stem(YPred - YTest)
-xlabel("Time")
+xlabel("Time (fs)")
 ylabel("Error")
 title("RMSE = " + rmse)
 %%
@@ -120,8 +121,8 @@ hold on
 idx = numTimeStepsTrain:(numTimeStepsTrain+numTimeStepsTest);
 plot(idx,[dataSN(numTimeStepsTrain) YPred],'.-')
 hold off
-xlabel("Time")
-ylabel("Intensity")
+xlabel("Time (fs)")
+ylabel("Amplitude (a.u.)")
 title("Forecast with Updates")
 legend(["Observed" "Forecast with Updates"])
 
@@ -133,12 +134,12 @@ hold on
 plot(YPred,'.-')
 hold off
 legend(["Observed" "Predicted"])
-ylabel("Intensity")
+ylabel("Amplitude (a.u.)")
 title("Forecast with Updates")
 
 subplot(2,1,2)
 stem(YPred - YTest)
-xlabel("Time")
+xlabel("Time (fs)")
 ylabel("Error")
 title("RMSE = " + rmse)
 %%
