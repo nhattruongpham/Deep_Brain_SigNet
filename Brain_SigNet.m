@@ -63,7 +63,7 @@ net = predictAndUpdateState(net,XTrain);
 
 numTimeStepsTest = numel(XTest);
 for i = 2:numTimeStepsTest
-    [net,YPred(:,i)] = predictAndUpdateState(net,YPred(:,i-1),'ExecutionEnvironment','cpu');
+    [net,YPred(:,i)] = predictAndUpdateState(net,YPred(:,i-1),'ExecutionEnvironment','gpu');
 end
 
 YPred = sig*YPred + mu;
@@ -107,7 +107,7 @@ net = predictAndUpdateState(net,XTrain);
 YPred = [];
 numTimeStepsTest = numel(XTest);
 for i = 1:numTimeStepsTest
-    [net,YPred(:,i)] = predictAndUpdateState(net,XTest(:,i),'ExecutionEnvironment','cpu');
+    [net,YPred(:,i)] = predictAndUpdateState(net,XTest(:,i),'ExecutionEnvironment','gpu');
 end
 
 YPred = sig*YPred + mu;
@@ -143,4 +143,9 @@ xlabel("Time (fs)")
 ylabel("Error")
 title("RMSE = " + rmse)
 %%
+% Error Bars Plot
+figure(6)
+err = YTest - YPred;
+errorbar(XTest,YTest,err,'-s','MarkerSize',5,...
+    'MarkerEdgeColor','red','MarkerFaceColor','red')
 %% End program
